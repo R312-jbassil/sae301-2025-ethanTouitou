@@ -1,0 +1,156 @@
+---
+import Layout from "../layouts/Layout.astro";
+import signupScript from "../scripts/auth/signup.ts?url";
+---
+
+<Layout>
+	<main class="pt-28 pb-24">
+		<section class="mx-auto flex max-w-[1100px] flex-col gap-12 px-6 lg:flex-row lg:items-start">
+			<div class="flex-1 space-y-6">
+				<span class="inline-flex items-center rounded-full bg-white px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#1a1a1a] shadow-sm">
+					Espace client
+				</span>
+				<h1 class="text-3xl font-semibold text-[#1a1a1a] sm:text-4xl">
+					Créer votre compte TaVue
+				</h1>
+				<p class="text-base leading-relaxed text-[#1f2933]/80">
+					Enregistrez vos configurations, échangez avec nos artisans et suivez chaque étape de fabrication de vos lunettes sur mesure.
+				</p>
+				<ul class="space-y-3 text-sm text-[#1f2933]">
+					<li class="flex items-center gap-3">
+						<span class="inline-flex h-3 w-3 rounded-full bg-[#d4c5a0]"></span>
+						Retrouvez instantanément vos créations préférées
+					</li>
+					<li class="flex items-center gap-3">
+						<span class="inline-flex h-3 w-3 rounded-full bg-[#d4c5a0]"></span>
+						Bénéficiez de conseils personnalisés basés sur votre style
+					</li>
+					<li class="flex items-center gap-3">
+						<span class="inline-flex h-3 w-3 rounded-full bg-[#d4c5a0]"></span>
+						Suivi précis de la production artisanale française
+					</li>
+				</ul>
+				<div class="rounded-2xl bg-[#f5f1e6] px-6 py-5 text-sm text-[#1a1a1a] shadow-inner">
+					<strong>Infos sécurité :</strong> vos données sont stockées dans notre collection <strong>users</strong> et protégées par PocketBase.
+				</div>
+				<p class="text-sm text-[#1f2933]/75">
+					Déjà enregistré ? <a class="font-semibold text-[#1a1a1a] underline decoration-[#d4c5a0] decoration-2 underline-offset-4 transition hover:text-black" href="/connexion">Connectez-vous</a>.
+				</p>
+			</div>
+			<div class="flex-1">
+				<div class="rounded-3xl bg-white px-8 py-10 shadow-xl">
+					<h2 class="text-2xl font-semibold text-[#1a1a1a]">Inscription</h2>
+					<p class="mt-2 text-sm text-[#1f2933]/70">
+						Renseignez vos informations pour rejoindre la communauté TaVue.
+					</p>
+					<form id="signup-form" class="mt-8 space-y-6" novalidate>
+						<div class="space-y-2">
+							<label for="name" class="text-sm font-medium text-[#1a1a1a]">
+								Nom (optionnel)
+							</label>
+							<input
+								id="name"
+								name="name"
+								type="text"
+								placeholder="Ex. Léa Martin"
+								class="w-full rounded-2xl border border-[#e5dcc6] bg-[#faf7f0] px-4 py-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#d4c5a0] focus:ring-2 focus:ring-[#d4c5a0]/40"
+							/>
+						</div>
+						<div class="space-y-2">
+							<label for="email" class="text-sm font-medium text-[#1a1a1a]">
+								Adresse email
+							</label>
+							<input
+								id="email"
+								name="email"
+								type="email"
+								required
+								autocomplete="email"
+								placeholder="vous@example.com"
+								class="w-full rounded-2xl border border-[#e5dcc6] bg-[#faf7f0] px-4 py-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#d4c5a0] focus:ring-2 focus:ring-[#d4c5a0]/40"
+							/>
+						</div>
+						<div class="space-y-2">
+							<label for="password" class="text-sm font-medium text-[#1a1a1a]">
+								Mot de passe
+							</label>
+							<div class="relative">
+								<input
+									id="password"
+									name="password"
+									type="password"
+									required
+									minlength="8"
+									autocomplete="new-password"
+									placeholder="Créez un mot de passe"
+									class="w-full rounded-2xl border border-[#e5dcc6] bg-[#faf7f0] px-4 py-3 pr-12 text-sm text-[#1a1a1a] outline-none transition focus:border-[#d4c5a0] focus:ring-2 focus:ring-[#d4c5a0]/40"
+								/>
+								<button
+									type="button"
+									class="absolute inset-y-0 right-3 flex items-center text-xs font-semibold uppercase tracking-wide text-[#6b7280] transition hover:text-[#1a1a1a]"
+									data-toggle-password="password"
+								>
+									Afficher
+								</button>
+							</div>
+							<p class="text-xs text-[#6b7280]">Minimum 8 caractères pour garantir la sécurité de votre compte.</p>
+						</div>
+						<div class="space-y-2">
+							<label for="passwordConfirm" class="text-sm font-medium text-[#1a1a1a]">
+								Confirmation du mot de passe
+							</label>
+							<div class="relative">
+								<input
+									id="passwordConfirm"
+									name="passwordConfirm"
+									type="password"
+									required
+									minlength="8"
+									autocomplete="new-password"
+									placeholder="Répétez le mot de passe"
+									class="w-full rounded-2xl border border-[#e5dcc6] bg-[#faf7f0] px-4 py-3 pr-12 text-sm text-[#1a1a1a] outline-none transition focus:border-[#d4c5a0] focus:ring-2 focus:ring-[#d4c5a0]/40"
+								/>
+								<button
+									type="button"
+									class="absolute inset-y-0 right-3 flex items-center text-xs font-semibold uppercase tracking-wide text-[#6b7280] transition hover:text-[#1a1a1a]"
+									data-toggle-password="passwordConfirm"
+								>
+									Afficher
+								</button>
+							</div>
+						</div>
+						<div class="space-y-2">
+							<label for="avatar" class="text-sm font-medium text-[#1a1a1a]">
+								Avatar (optionnel)
+							</label>
+							<input
+								id="avatar"
+								name="avatar"
+								type="file"
+								accept="image/png,image/jpeg,image/avif,image/webp"
+								class="w-full rounded-2xl border border-dashed border-[#d4c5a0] bg-[#faf7f0]/70 px-4 py-3 text-sm text-[#1a1a1a] outline-none transition file:mr-4 file:rounded-full file:border-0 file:bg-[#d4c5a0] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#1a1a1a] hover:border-[#bba97d]"
+							/>
+							<p class="text-xs text-[#6b7280]">Formats acceptés : PNG, JPG, WEBP, AVIF. Votre photo sera associée à votre profil.</p>
+						</div>
+						<div class="space-y-3">
+							<button
+								type="submit"
+								class="flex w-full items-center justify-center rounded-2xl bg-[#1a1a1a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#9ca3af]"
+							>
+								<span data-default-label>Créer mon compte</span>
+								<span data-loading-label class="hidden">Création en cours…</span>
+							</button>
+							<p
+								id="signup-status"
+								class="min-h-[1.5rem] text-center text-sm font-medium"
+								aria-live="polite"
+							></p>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<script type="module" src={signupScript}></script>

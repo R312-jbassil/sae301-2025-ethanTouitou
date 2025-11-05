@@ -1,14 +1,68 @@
+---
+import "../styles/global.css";
+import Logo from "../assets/logo.svg";
+
+const { pathname } = Astro.url;
+const navItems = [
+	{ href: "/", label: "Accueil" },
+	{ href: "/configurer", label: "Configurer" },
+	{ href: "/#mes-creations", label: "Mes créations" },
+	{ href: "/mon-compte", label: "Mon compte" },
+];
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>TaVue — Configurateur de lunettes sur mesure</title>
 	</head>
-	<body>
-		<slot />
+	<body class="bg-[#f5f1e6] text-[#1f2933] antialiased">
+		<div class="min-h-screen">
+			<header
+				class="fixed inset-x-0 top-0 z-50 border-b border-[#e8e1d3]/80 bg-white/90 backdrop-blur"
+			>
+				<div
+					class="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4"
+				>
+					<a href="/" class="flex items-center gap-3">
+						<img src={Logo.src} alt="TaVue" class="h-10 w-auto" />
+					</a>
+					<nav class="hidden items-center gap-8 text-sm font-medium md:flex">
+						{navItems.map((item) => {
+							const isActive = pathname === item.href;
+							return (
+								<a
+									key={item.href}
+									href={item.href}
+									class={`transition hover:text-[#d4c5a0] ${
+										isActive ? "text-[#d4c5a0]" : ""
+									}`}
+								>
+									{item.label}
+								</a>
+							);
+						})}
+						<a
+							href="/inscription"
+							class="transition hover:text-[#d4c5a0]"
+						>
+							S'inscrire
+						</a>
+						<a
+							href="/connexion"
+							class="rounded-full border border-[#1a1a1a] px-4 py-2 text-sm font-semibold text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-white"
+						>
+							Se connecter
+						</a>
+					</nav>
+				</div>
+			</header>
+			<slot />
+		</div>
 	</body>
 </html>
 

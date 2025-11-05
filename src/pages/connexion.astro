@@ -1,0 +1,108 @@
+---
+import Layout from "../layouts/Layout.astro";
+import loginScript from "../scripts/auth/login.ts?url";
+---
+
+<Layout>
+	<main class="pt-28 pb-24">
+		<section class="mx-auto flex max-w-[1100px] flex-col gap-12 px-6 lg:flex-row lg:items-start">
+			<div class="flex-1 space-y-6">
+				<span class="inline-flex items-center rounded-full bg-white px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#1a1a1a] shadow-sm">
+					Espace client
+				</span>
+				<h1 class="text-3xl font-semibold text-[#1a1a1a] sm:text-4xl">
+					Connexion à votre compte TaVue
+				</h1>
+				<p class="text-base leading-relaxed text-[#1f2933]/80">
+					Retrouvez vos configurations enregistrées, suivez l’avancement de vos commandes et recevez des recommandations personnalisées.
+				</p>
+				<ul class="space-y-3 text-sm text-[#1f2933]">
+					<li class="flex items-center gap-3">
+						<span class="inline-flex h-3 w-3 rounded-full bg-[#d4c5a0]"></span>
+						Synchronisation instantanée avec vos créations favorites
+					</li>
+					<li class="flex items-center gap-3">
+						<span class="inline-flex h-3 w-3 rounded-full bg-[#d4c5a0]"></span>
+						Suivi en temps réel de la fabrication artisanale
+					</li>
+					<li class="flex items-center gap-3">
+						<span class="inline-flex h-3 w-3 rounded-full bg-[#d4c5a0]"></span>
+						Assistance dédiée pour vos ajustements sur-mesure
+					</li>
+				</ul>
+				<div class="rounded-2xl bg-[#f5f1e6] px-6 py-5 text-sm text-[#1a1a1a] shadow-inner">
+					<strong>Astuce :</strong> pas encore de compte ? Contactez nos conseillers pour activer votre accès personnalisé.
+				</div>
+			</div>
+			<div class="flex-1">
+				<div class="rounded-3xl bg-white px-8 py-10 shadow-xl">
+					<h2 class="text-2xl font-semibold text-[#1a1a1a]">Se connecter</h2>
+					<p class="mt-2 text-sm text-[#1f2933]/70">
+						Saisissez votre adresse email et votre mot de passe afin d’accéder à votre espace TaVue.
+					</p>
+					<form id="login-form" class="mt-8 space-y-6" novalidate>
+						<div class="space-y-2">
+							<label for="identity" class="text-sm font-medium text-[#1a1a1a]">
+								Adresse email
+							</label>
+							<input
+								id="identity"
+								name="identity"
+								type="email"
+								required
+								autocomplete="email"
+								placeholder="vous@example.com"
+								class="w-full rounded-2xl border border-[#e5dcc6] bg-[#faf7f0] px-4 py-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#d4c5a0] focus:ring-2 focus:ring-[#d4c5a0]/40"
+							/>
+						</div>
+						<div class="space-y-2">
+							<label for="password" class="text-sm font-medium text-[#1a1a1a]">
+								Mot de passe
+							</label>
+							<div class="relative">
+								<input
+									id="password"
+									name="password"
+									type="password"
+									required
+									autocomplete="current-password"
+									placeholder="••••••••"
+									class="w-full rounded-2xl border border-[#e5dcc6] bg-[#faf7f0] px-4 py-3 pr-12 text-sm text-[#1a1a1a] outline-none transition focus:border-[#d4c5a0] focus:ring-2 focus:ring-[#d4c5a0]/40"
+								/>
+								<button
+									type="button"
+									class="absolute inset-y-0 right-3 flex items-center text-xs font-semibold uppercase tracking-wide text-[#6b7280] transition hover:text-[#1a1a1a]"
+									data-toggle-password
+								>
+									Afficher
+								</button>
+							</div>
+						</div>
+						<div class="space-y-3">
+							<button
+								type="submit"
+								class="flex w-full items-center justify-center rounded-2xl bg-[#1a1a1a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-black disabled:cursor-not-allowed disabled:bg-[#9ca3af]"
+							>
+								<span data-default-label>Connexion</span>
+								<span data-loading-label class="hidden">Connexion en cours…</span>
+							</button>
+							<p
+								id="login-status"
+								class="min-h-[1.5rem] text-center text-sm font-medium"
+								aria-live="polite"
+							></p>
+						</div>
+					</form>
+					<p class="mt-6 text-xs text-[#6b7280]">
+						Votre mot de passe est chiffré et stocké en toute sécurité dans notre collection <strong>users</strong>.
+					</p>
+					<p class="mt-4 text-sm text-[#1f2933]/75">
+						Pas encore de compte ? <a class="font-semibold text-[#1a1a1a] underline decoration-[#d4c5a0] decoration-2 underline-offset-4 transition hover:text-black" href="/inscription">Je crée mon compte</a>.
+					</p>
+				</div>
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<script type="module" src={loginScript}></script>

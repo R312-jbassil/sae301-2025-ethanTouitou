@@ -1,0 +1,117 @@
+---
+import Layout from "../layouts/Layout.astro";
+import accountScript from "../scripts/auth/account.ts?url";
+---
+
+<Layout>
+	<main class="pt-28 pb-24">
+		<section class="mx-auto max-w-[1100px] px-6">
+			<header class="flex flex-col gap-6 rounded-3xl bg-white px-8 py-10 shadow-xl lg:flex-row lg:items-center lg:justify-between">
+				<div class="flex items-center gap-6">
+					<div class="relative">
+						<span class="absolute -right-1 -top-1 h-4 w-4 rounded-full border-2 border-white bg-[#d4c5a0]" aria-hidden="true"></span>
+						<img
+							data-user-avatar
+							src="/placeholder-avatar.svg"
+							alt="Avatar utilisateur TaVue"
+							class="h-20 w-20 rounded-full border-4 border-[#f5f1e6] object-cover shadow-inner"
+						/>
+					</div>
+					<div>
+						<h1 class="text-3xl font-semibold text-[#1a1a1a]" data-user-name>
+							Chargement du profil…
+						</h1>
+						<p class="mt-1 text-sm text-[#6b7280]" data-user-email>
+							Connexion à PocketBase en cours.
+						</p>
+						<p class="mt-2 text-xs font-medium uppercase tracking-wide text-[#d4c5a0]" data-user-status>
+							Statut : —
+						</p>
+					</div>
+				</div>
+				<div class="flex flex-col gap-3 text-sm text-[#1f2933]/80 sm:flex-row">
+					<div class="rounded-2xl bg-[#f5f1e6] px-4 py-3 text-center">
+						<p class="text-xs uppercase tracking-wide text-[#6b7280]">
+							Membre depuis
+						</p>
+						<p class="mt-1 text-base font-semibold text-[#1a1a1a]" data-user-created>
+							—
+						</p>
+					</div>
+					<div class="rounded-2xl bg-[#f5f1e6] px-4 py-3 text-center">
+						<p class="text-xs uppercase tracking-wide text-[#6b7280]">
+							Lunettes sauvegardées
+						</p>
+						<p class="mt-1 text-base font-semibold text-[#1a1a1a]" data-glasses-count>
+							0
+						</p>
+					</div>
+					<button
+						type="button"
+						data-logout
+						class="rounded-2xl border border-[#1a1a1a] px-4 py-3 font-semibold text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-white"
+					>
+						Se déconnecter
+					</button>
+				</div>
+			</header>
+
+			<section class="mt-12 grid gap-8 lg:grid-cols-[1fr_1.2fr]">
+				<article class="rounded-3xl bg-gradient-to-br from-[#f5f1e6] via-[#f9f6ed] to-white px-7 py-8 shadow-lg">
+					<h2 class="text-lg font-semibold text-[#1a1a1a]">Informations personnelles</h2>
+					<dl class="mt-6 space-y-4 text-sm text-[#1f2933]/85">
+						<div class="flex items-start justify-between gap-6">
+							<dt class="font-medium text-[#1a1a1a]">Nom affiché</dt>
+							<dd class="max-w-[60%]" data-user-display>
+								—
+							</dd>
+						</div>
+						<div class="flex items-start justify-between gap-6">
+							<dt class="font-medium text-[#1a1a1a]">Email</dt>
+							<dd class="max-w-[60%]" data-user-email-detail>
+								—
+							</dd>
+						</div>
+						<div class="flex items-start justify-between gap-6">
+							<dt class="font-medium text-[#1a1a1a]">Visibilité de l'email</dt>
+							<dd class="max-w-[60%]" data-user-email-visibility>
+								—
+							</dd>
+						</div>
+						<div class="flex items-start justify-between gap-6">
+							<dt class="font-medium text-[#1a1a1a]">Vérification</dt>
+							<dd class="max-w-[60%]" data-user-verification>
+								—
+							</dd>
+						</div>
+					</dl>
+				</article>
+
+				<article class="rounded-3xl bg-white px-7 py-8 shadow-lg">
+					<div class="flex items-center justify-between">
+						<h2 class="text-lg font-semibold text-[#1a1a1a]">Mes lunettes sauvegardées</h2>
+						<a
+							href="/"
+							class="text-sm font-semibold text-[#1a1a1a] underline decoration-[#d4c5a0] underline-offset-4 transition hover:text-black"
+						>
+							Créer une nouvelle paire
+						</a>
+					</div>
+					<div class="mt-6 space-y-4" data-glasses-list>
+						<div class="rounded-2xl border border-dashed border-[#d4c5a0] bg-[#faf7f0] px-5 py-6 text-center text-sm text-[#6b7280]">
+							<svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-10 w-10 text-[#d4c5a0]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25l-1.5 1.5m0 0l1.5 1.5m-1.5-1.5h12M3 12a9 9 0 1118 0 9 9 0 01-18 0z" />
+							</svg>
+							<p class="mt-3 font-medium text-[#1a1a1a]">Aucune création sauvegardée pour le moment.</p>
+							<p class="mt-1">
+								Personnalisez vos montures et sauvegardez-les pour les retrouver ici.
+							</p>
+						</div>
+					</div>
+				</article>
+			</section>
+		</section>
+	</main>
+</Layout>
+
+<script type="module" src={accountScript}></script>

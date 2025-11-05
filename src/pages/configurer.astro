@@ -1,0 +1,309 @@
+---
+import Layout from "../layouts/Layout.astro";
+import lunettesSvg from "../assets/lunettes.svg?raw";
+
+const configurateurScript = "/scripts/configurateur.js";
+
+const colors = [
+	{ name: "Noir", value: "#1f1f1f" },
+	{ name: "Anthracite", value: "#3a3a3a" },
+	{ name: "Beige", value: "#d4c5a0" },
+	{ name: "Écaille", value: "#a5653f" },
+	{ name: "Ivoire", value: "#f5f1e6" },
+	{ name: "Bleu", value: "#5678ff" },
+	{ name: "Vert", value: "#4caf50" },
+	{ name: "Rouge", value: "#e03d3d" },
+	{ name: "Rose", value: "#eaa0b5" },
+];
+
+const pocketbaseUrl =
+	import.meta.env.PUBLIC_POCKETBASE_URL ?? "http://127.0.0.1:8090";
+const currentUserId = import.meta.env.PUBLIC_CURRENT_USER_ID ?? "";
+---
+
+<Layout>
+	<main class="bg-[#f5f1e6]">
+		<section class="mx-auto max-w-6xl px-6 py-10 space-y-10">
+			<header class="space-y-4">
+				<a
+					href="/"
+					class="inline-flex items-center text-sm font-medium text-[#1a1a1a] transition hover:text-[#d4c5a0]"
+				>
+					<span aria-hidden="true">←</span>
+					<span class="ml-2">Retour à l'accueil</span>
+				</a>
+				<div>
+					<h1 class="text-4xl font-semibold text-[#1a1a1a]">
+						Configurateur de lunettes
+					</h1>
+					<p class="mt-2 max-w-3xl text-base text-[#1f2933]/80">
+						Personnalisez chaque aspect de votre monture et
+						visualisez votre création en temps réel.
+					</p>
+				</div>
+			</header>
+
+			<section
+				class="grid grid-cols-1 gap-6 lg:grid-cols-2"
+				data-configurator
+				data-pocketbase-url={pocketbaseUrl}
+				data-user-id={currentUserId}
+			>
+				<div class="rounded-2xl bg-white px-6 py-8 shadow-md space-y-6">
+					<div class="flex items-center justify-between">
+						<h2 class="text-xl font-semibold text-[#1a1a1a]">
+							Aperçu en temps réel
+						</h2>
+						<span
+							class="rounded-full bg-[#f5f1e6] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#6b7280]"
+						>
+							Visualisation
+						</span>
+					</div>
+					<div
+						class="flex pt-90 h-72 items-center justify-center overflow-hidden rounded-2xl border border-[#f0e8d6] bg-[#faf7f0] p-6"
+						data-svg-wrapper
+						set:html={lunettesSvg}
+					/>
+					<p
+						class="rounded-full bg-[#f5f1e6] px-5 py-3 text-center text-sm font-medium text-[#1f2933]"
+						data-summary
+					>
+						Matériau : — • Branches : {colors[0].name} • Cerclage : {
+							colors[0].name
+						} • Verres : {colors[4].name} • Forme : Rectangulaire
+					</p>
+				</div>
+
+				<div class="rounded-2xl bg-white px-6 py-8 shadow-md">
+					<h2 class="text-xl font-semibold text-[#1a1a1a]">
+						Personnalisation manuelle
+					</h2>
+					<form class="mt-6 space-y-6" data-config-form>
+						<div class="space-y-2">
+							<label class="text-sm font-semibold text-[#1a1a1a]">
+								Matériau de la monture
+							</label>
+							<select
+								name="materiau"
+								data-materiau
+								class="w-full rounded-2xl border border-[#e5dcc6] bg-[#faf7f0] px-4 py-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#d4c5a0] focus:ring-2 focus:ring-[#d4c5a0]/40"
+							>
+								<option>Chargement…</option>
+							</select>
+						</div>
+
+						<div class="space-y-3">
+							<p class="text-sm font-semibold text-[#1a1a1a]">
+								Couleur des branches
+							</p>
+							<div
+								class="grid grid-cols-5 gap-2"
+								data-color-branches
+							>
+								{
+									colors.map((color, index) => (
+										<button
+											type="button"
+											data-color-name={color.name}
+											data-color-value={color.value}
+											class={`h-10 w-10 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#d4c5a0] ${
+												index === 0
+													? "ring-2 ring-[#d4c5a0]"
+													: "border-transparent"
+											}`}
+											style={{
+												backgroundColor: color.value,
+											}}
+											aria-label={`Choisir la couleur ${color.name} pour les branches`}
+										/>
+									))
+								}
+							</div>
+						</div>
+
+						<div class="space-y-3">
+							<p class="text-sm font-semibold text-[#1a1a1a]">
+								Couleur du cerclage / pont
+							</p>
+					<div
+						class="grid grid-cols-5 gap-2"
+						data-color-frame
+					>
+						{
+							colors.map((color, index) => (
+								<button
+									type="button"
+									data-color-name={color.name}
+									data-color-value={color.value}
+									class={`h-10 w-10 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#d4c5a0] ${
+										index === 0
+											? "ring-2 ring-[#d4c5a0]"
+											: "border-transparent"
+										}`}
+									style={{
+										backgroundColor: color.value,
+									}}
+									aria-label={`Choisir la couleur ${color.name} pour le cerclage`}
+								/>
+							))
+						}
+					</div>
+				</div>
+
+				<div class="space-y-3">
+					<p class="text-sm font-semibold text-[#1a1a1a]">
+						Textures (matériaux PocketBase)
+					</p>
+					<div
+						class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4"
+						data-materials-list
+					></div>
+				</div>
+
+				<div class="space-y-3">
+							<p class="text-sm font-semibold text-[#1a1a1a]">
+								Couleur des verres
+							</p>
+							<div
+								class="grid grid-cols-5 gap-2"
+								data-color-lenses
+							>
+								{
+									colors.map((color, index) => (
+										<button
+											type="button"
+											data-color-name={color.name}
+											data-color-value={color.value}
+											class={`h-10 w-10 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#d4c5a0] ${
+												index === 4
+													? "ring-2 ring-[#d4c5a0]"
+													: "border-transparent"
+											}`}
+											style={{
+												backgroundColor: color.value,
+											}}
+											aria-label={`Choisir la couleur ${color.name} pour les verres`}
+										/>
+									))
+								}
+							</div>
+						</div>
+
+						<div class="space-y-2">
+							<label class="text-sm font-semibold text-[#1a1a1a]">
+								Forme des verres
+							</label>
+							<select
+								name="forme"
+								class="w-full rounded-2xl border border-[#e5dcc6] bg-[#faf7f0] px-4 py-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#d4c5a0] focus:ring-2 focus:ring-[#d4c5a0]/40"
+							>
+								<option value="Rectangulaire"
+									>Rectangulaire</option
+								>
+								<option value="Ronde">Ronde</option>
+								<option value="Papillon">Papillon</option>
+							</select>
+						</div>
+
+						<div class="space-y-3">
+							<div class="flex items-center justify-between">
+								<label
+									class="text-sm font-semibold text-[#1a1a1a]"
+								>
+									Largeur du pont
+								</label>
+								<span
+									class="rounded-full bg-[#f5f1e6] px-3 py-1 text-xs font-medium text-[#1a1a1a]"
+									data-pont-value
+								>
+									20 mm
+								</span>
+							</div>
+							<input
+								type="range"
+								name="largeurPont"
+								class="w-full accent-[#d4c5a0]"
+								min="10"
+								max="30"
+								value="20"
+							/>
+						</div>
+
+						<div class="space-y-3">
+							<div class="flex items-center justify-between">
+								<label
+									class="text-sm font-semibold text-[#1a1a1a]"
+								>
+									Taille des verres
+								</label>
+								<span
+									class="rounded-full bg-[#f5f1e6] px-3 py-1 text-xs font-medium text-[#1a1a1a]"
+									data-verre-value
+								>
+									50 mm
+								</span>
+							</div>
+							<input
+								type="range"
+								name="tailleVerre"
+								class="w-full accent-[#d4c5a0]"
+								min="40"
+								max="60"
+								value="50"
+							/>
+						</div>
+
+						<div class="pt-2 space-y-3">
+							<button
+								type="submit"
+								data-save
+								class="flex w-full items-center justify-center rounded-full bg-[#d4c5a0] px-6 py-3 text-sm font-semibold text-[#1a1a1a] transition hover:bg-[#c5b181] focus:outline-none focus:ring-2 focus:ring-[#d4c5a0]/60"
+							>
+								💾 Sauvegarder ma création
+							</button>
+							<p
+								data-feedback
+								class="min-h-[1.25rem] text-center text-sm font-medium text-[#1f2933]"
+							>
+							</p>
+						</div>
+					</form>
+				</div>
+			</section>
+
+			<section class="rounded-2xl bg-white px-6 py-8 shadow-md">
+				<div
+					class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between"
+				>
+					<div class="lg:max-w-3xl space-y-2">
+						<h2 class="text-xl font-semibold text-[#1a1a1a]">
+							Décrivez vos lunettes idéales et laissez notre IA
+							créer le modèle parfait
+						</h2>
+						<p class="text-sm text-[#1f2933]/80">
+							Expliquez votre style et vos envies. Une future
+							intégration OpenRouter pourra générer
+							automatiquement une configuration personnalisée.
+						</p>
+					</div>
+					<div class="w-full max-w-md space-y-3">
+						<textarea
+							rows="4"
+							class="w-full rounded-2xl border border-[#e5dcc6] bg-[#faf7f0] px-4 py-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#d4c5a0] focus:ring-2 focus:ring-[#d4c5a0]/40"
+							placeholder="Ex : Monture légère en acétate beige, verres arrondis et branches contrastées."
+						></textarea>
+						<button
+							type="button"
+							class="flex w-full items-center justify-center rounded-full border border-[#1a1a1a] px-6 py-3 text-sm font-semibold text-[#1a1a1a] transition hover:bg-[#1a1a1a] hover:text-white"
+							onclick="console.log('Demande IA configurateur :', this.previousElementSibling?.value ?? '')"
+						>
+							⚙️ Générer avec l'IA
+						</button>
+					</div>
+				</div>
+			</section>
+		</section>
+	</main>
+	<script type="module" src={configurateurScript}></script>
+</Layout>
