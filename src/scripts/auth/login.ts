@@ -12,7 +12,7 @@ const initLoginForm = () => {
 	const passwordField = form.querySelector<HTMLInputElement>("#password");
 
 	const pocketbaseUrl =
-		import.meta.env.PUBLIC_POCKETBASE_URL ?? "http://tavuee.ethantouitou.fr:443";
+		import.meta.env.PUBLIC_POCKETBASE_URL ?? "http://tavuee.ethantouitou.fr/_/";
 	const pb = new PocketBase(pocketbaseUrl);
 
 	const resetStatus = () => {
