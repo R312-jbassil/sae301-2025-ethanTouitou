@@ -65,6 +65,11 @@ const initConfigurator = () => {
 	const saveButton = form?.querySelector<HTMLButtonElement>("[data-save]");
 	const nameInput =
 		form?.querySelector<HTMLInputElement>("[data-creation-name]");
+	const aiSection = document.querySelector<HTMLElement>("[data-ai-section]");
+	const aiPrompt = aiSection?.querySelector<HTMLTextAreaElement>("[data-ai-prompt]");
+	const aiButton = aiSection?.querySelector<HTMLButtonElement>("[data-ai-generate]");
+	const aiFeedback = aiSection?.querySelector<HTMLElement>("[data-ai-feedback]");
+	const aiDefaultLabel = aiButton?.textContent ?? "⚙️ Générer avec l'IA";
 
 	if (
 		!materialSelect ||
@@ -445,6 +450,35 @@ const initConfigurator = () => {
 		}
 	};
 
+	const selectColorByName = (
+		container: HTMLElement | null,
+		name: string | null | undefined
+	) => {
+		if (!container || !name) return false;
+		const normalized = name.trim().toLowerCase();
+		const buttons = Array.from(
+			container.querySelectorAll<HTMLButtonElement>("button")
+		);
+		const target = buttons.find(
+			(btn) => (btn.dataset.colorName ?? "").trim().toLowerCase() === normalized
+		);
+		if (!target) return false;
+		target.click();
+		return true;
+	};
+
+	const setAiFeedback = (message: string, type: "error" | "info" | "success") => {
+		if (!aiFeedback) return;
+		aiFeedback.textContent = message;
+		const classes = {
+			error: "text-red-600",
+			info: "text-[#6b7280]",
+			success: "text-green-600",
+		} as const;
+		Object.values(classes).forEach((cls) => aiFeedback.classList.remove(cls));
+		aiFeedback.classList.add(classes[type]);
+	};
+
 	form.addEventListener("submit", async (event) => {
 		event.preventDefault();
 
@@ -522,6 +556,84 @@ const initConfigurator = () => {
 
 	applyAll();
 	void loadMaterials();
+
+	if (aiSection && aiPrompt && aiButton && aiFeedback) {
+		aiButton.addEventListener("click", async () => {
+			const prompt = aiPrompt.value.trim();
+			if (!prompt) {
+				setAiFeedback("Décrivez vos envies avant de lancer l'IA.", "error");
+				aiPrompt.focus();
+				return;
+			}
+
+			aiButton.disabled = true;
+			aiButton.textContent = "Génération…";
+			setAiFeedback("L'IA prépare une proposition…", "info");
+
+			try {
+				const response = await fetch("/api2/generate-colors", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						prompt,
+						current: {
+							branches: state.branches.label,
+							frame: state.frameTexture.label ?? state.frame.label,
+							lenses: state.lenses.label,
+						},
+					}),
+				});
+
+				const payload = await response.json();
+				if (!response.ok || !payload?.success) {
+					throw new Error(payload?.error ?? "La génération IA a échoué.");
+				}
+
+				const colors = payload.colors as {
+					branches: { name: string; value: string };
+					frame: { name: string; value: string };
+					lenses: { name: string; value: string };
+				};
+
+				const applied = {
+					branches: selectColorByName(branchesPalette, colors?.branches?.name),
+					frame: selectColorByName(framePalette, colors?.frame?.name),
+					lenses: selectColorByName(lensesPalette, colors?.lenses?.name),
+				};
+
+				if (!applied.branches && !applied.frame && !applied.lenses) {
+					throw new Error(
+						"L'IA a proposé des couleurs indisponibles. Reformulez votre demande."
+					);
+				}
+
+				const successLines = [
+					"Nouvelle palette appliquée :",
+					applied.branches ? `branches → ${colors.branches.name}` : null,
+					applied.frame ? `monture → ${colors.frame.name}` : null,
+					applied.lenses ? `verres → ${colors.lenses.name}` : null,
+				].filter(Boolean);
+
+				const successMessage = successLines.join(" ");
+
+				setAiFeedback(
+					payload.reason
+						? `${successMessage}\n${payload.reason}`
+						: successMessage,
+					"success"
+				);
+				applyAll();
+			} catch (error) {
+				console.error("[configurateur] IA error", error);
+				const message =
+					error instanceof Error ? error.message : "Erreur IA inattendue.";
+				setAiFeedback(message, "error");
+			} finally {
+				aiButton.disabled = false;
+				aiButton.textContent = aiDefaultLabel;
+			}
+		});
+	}
 };
 
 if (document.readyState === "loading") {
