@@ -1,0 +1,5 @@
+l’url de l’application web: https://tavuee.ethantouitou.fr/  (le pocketbase ne fonctionne pas en ligne)
+
+le lien vers votre dépôt github: https://github.com/R312-jbassil/sae301-2025-ethanTouitou
+
+lien maquette: https://www.figma.com/make/ATGz7TcHtpkPYspYuHkGK6/Web-Mockup-for-TaVue?node-id=0-1&t=DDVjCA9LuxWp1ati-1

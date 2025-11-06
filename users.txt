@@ -1,0 +1,4 @@
+Acces pocketbase 
+
+login: etouitou25.touitou@gmail.com 
+mdp: sae3012025
