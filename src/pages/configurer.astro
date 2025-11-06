@@ -1,8 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import lunettesSvg from "../assets/lunettes.svg?raw";
-
-const configurateurScript = "/scripts/configurateur.js";
+import configurateurScript from "../scripts/configurateur.ts?url";
 
 const colors = [
 	{ name: "Noir", value: "#1f1f1f" },
@@ -80,6 +79,24 @@ const currentUserId = import.meta.env.PUBLIC_CURRENT_USER_ID ?? "";
 						Personnalisation manuelle
 					</h2>
 					<form class="mt-6 space-y-6" data-config-form>
+						<div class="space-y-2">
+							<label
+								for="creation-name"
+								class="text-sm font-semibold text-[#1a1a1a]"
+							>
+								Nom de votre modèle
+							</label>
+							<input
+								id="creation-name"
+								name="nomLunette"
+								type="text"
+								data-creation-name
+								required
+								maxlength="80"
+								class="w-full rounded-2xl border border-[#e5dcc6] bg-[#faf7f0] px-4 py-3 text-sm text-[#1a1a1a] outline-none transition focus:border-[#d4c5a0] focus:ring-2 focus:ring-[#d4c5a0]/40"
+								placeholder="Ex : Écaille rétro 2024"
+							/>
+						</div>
 						<div class="space-y-2">
 							<label class="text-sm font-semibold text-[#1a1a1a]">
 								Matériau de la monture

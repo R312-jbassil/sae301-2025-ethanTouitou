@@ -14,6 +14,7 @@ type PocketBaseUser = {
 type LunetteRecord = {
 	id: string;
 	code_svg?: string;
+	nom?: string;
 	largeur_pont?: number;
 	taille_verre?: number;
 	created?: string;
@@ -59,11 +60,13 @@ const buildSvgPreview = (record: LunetteRecord) => {
 	if (!record.code_svg) return null;
 	try {
 		const decoded = decodeURIComponent(record.code_svg);
-		if (!decoded.startsWith("<svg")) return null;
-		return decoded;
+		if (decoded.startsWith("<svg")) {
+			return decoded;
+		}
 	} catch {
-		return null;
+		// décodage échoué, on tente avec la valeur brute
 	}
+	return record.code_svg.startsWith("<svg") ? record.code_svg : null;
 };
 
 const renderGlasses = (container: HTMLElement, records: ComposeRecord[]) => {
@@ -86,11 +89,14 @@ const renderGlasses = (container: HTMLElement, records: ComposeRecord[]) => {
 		.map((record) => {
 			const lunette = record.expand?.IdLunette;
 			const preview = lunette ? buildSvgPreview(lunette) : null;
+			const creationName = lunette?.nom?.length
+				? lunette.nom
+				: `Création ${lunette?.id ?? record.id}`;
 			return `
 				<article class="rounded-2xl border border-[#f0e8d6] bg-[#fbf8f2] p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
 					<div class="flex items-start justify-between gap-4">
 						<div>
-							<h3 class="text-base font-semibold text-[#1a1a1a]">Création ${lunette?.id ?? record.id}</h3>
+							<h3 class="text-base font-semibold text-[#1a1a1a]">${creationName}</h3>
 							<p class="mt-1 text-xs uppercase tracking-wide text-[#6b7280]">
 								Sauvegardée le ${formatDate(record.created)}
 							</p>
@@ -107,6 +113,10 @@ const renderGlasses = (container: HTMLElement, records: ComposeRecord[]) => {
 						}
 					</div>
 					<ul class="mt-4 grid grid-cols-2 gap-3 text-xs text-[#1f2933]">
+						<li class="col-span-2">
+							<span class="font-semibold text-[#1a1a1a]">Nom :</span>
+							${creationName}
+						</li>
 						<li>
 							<span class="font-semibold text-[#1a1a1a]">Pont :</span>
 							${lunette?.largeur_pont ?? "—"} mm
